@@ -1,0 +1,18 @@
+[build]
+  command = "npm run netlify-build"
+  publish = "out"
+  functions = "netlify/functions"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[dev]
+  command = "npm run dev"
+  port = 3002
+  targetPort = 3002 
