@@ -1,40 +1,57 @@
-import { getCollectionProducts } from 'lib/shopify';
 import Link from 'next/link';
-import { GridTileImage } from './grid/tile';
+import Image from 'next/image';
 
-export async function Carousel() {
-  // Collections that start with `hidden-*` are hidden from the search page.
-  const products = await getCollectionProducts({ collection: 'hidden-homepage-carousel' });
-
-  if (!products?.length) return null;
-
-  // Purposefully duplicating products to make the carousel loop and not run out of products on wide screens.
-  const carouselProducts = [...products, ...products, ...products];
+export function Carousel() {
+  // Placeholder data instead of Shopify products
+  const placeholderProducts = [
+    {
+      id: '1',
+      handle: 'product-1',
+      title: 'Product 1',
+      price: '$99.99',
+      image: '/placeholder.jpg'
+    },
+    {
+      id: '2',
+      handle: 'product-2',
+      title: 'Product 2',
+      price: '$129.99',
+      image: '/placeholder.jpg'
+    },
+    {
+      id: '3',
+      handle: 'product-3',
+      title: 'Product 3',
+      price: '$79.99',
+      image: '/placeholder.jpg'
+    }
+  ];
 
   return (
     <div className="w-full overflow-x-auto pb-6 pt-1">
-      <ul className="flex animate-carousel gap-4">
-        {carouselProducts.map((product, i) => (
-          <li
-            key={`${product.handle}${i}`}
-            className="relative aspect-square h-[30vh] max-h-[275px] w-2/3 max-w-[475px] flex-none md:w-1/3"
+      <div className="flex animate-carousel gap-4">
+        {[...placeholderProducts, ...placeholderProducts].map((product, i) => (
+          <Link
+            key={`${product.handle}-${i}`}
+            href={`/product/${product.handle}`}
+            className="aspect-square h-[30vh] min-w-[30vh] relative"
           >
-            <Link href={`/product/${product.handle}`} className="relative h-full w-full">
-              <GridTileImage
+            <div className="relative h-full w-full">
+              <Image
                 alt={product.title}
-                label={{
-                  title: product.title,
-                  amount: product.priceRange.maxVariantPrice.amount,
-                  currencyCode: product.priceRange.maxVariantPrice.currencyCode
-                }}
-                src={product.featuredImage?.url}
+                src={product.image}
                 fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                sizes="30vw"
+                className="object-cover"
               />
-            </Link>
-          </li>
+              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 p-2 text-white">
+                <h3 className="text-sm font-medium">{product.title}</h3>
+                <p className="text-xs">{product.price}</p>
+              </div>
+            </div>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

@@ -1,40 +1,35 @@
 'use client';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import Form from 'next/form';
-import { useSearchParams } from 'next/navigation';
 
 export default function Search() {
-  const searchParams = useSearchParams();
-
   return (
-    <Form action="/search" className="w-max-[550px] relative w-full lg:w-80 xl:w-full">
-      <input
-        key={searchParams?.get('q')}
-        type="text"
-        name="q"
-        placeholder="Search for products..."
-        autoComplete="off"
-        defaultValue={searchParams?.get('q') || ''}
-        className="text-md w-full rounded-lg border bg-white px-4 py-2 text-black placeholder:text-neutral-500 md:text-sm dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400"
-      />
-      <div className="absolute right-0 top-0 mr-3 flex h-full items-center">
-        <MagnifyingGlassIcon className="h-4" />
+    <div className="relative w-full max-w-[550px]">
+      <div className="relative flex items-center">
+        <input
+          type="text"
+          placeholder="Search for products..."
+          className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400"
+        />
+        <div className="absolute right-0 top-0 mr-3 flex h-full items-center">
+          <MagnifyingGlassIcon className="h-4" />
+        </div>
       </div>
-    </Form>
+    </div>
   );
 }
 
 export function SearchSkeleton() {
   return (
-    <form className="w-max-[550px] relative w-full lg:w-80 xl:w-full">
-      <input
-        placeholder="Search for products..."
-        className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400"
-      />
-      <div className="absolute right-0 top-0 mr-3 flex h-full items-center">
-        <MagnifyingGlassIcon className="h-4" />
+    <div className="relative w-full max-w-[550px]">
+      <div className="relative flex items-center">
+        <div className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400">
+          <div className="h-4 w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700"></div>
+        </div>
+        <div className="absolute right-0 top-0 mr-3 flex h-full items-center">
+          <div className="h-4 w-4 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700"></div>
+        </div>
       </div>
-    </form>
+    </div>
   );
 }

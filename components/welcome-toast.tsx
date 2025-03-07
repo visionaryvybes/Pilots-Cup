@@ -8,23 +8,21 @@ export function WelcomeToast() {
     // ignore if screen height is too small
     if (window.innerHeight < 650) return;
     if (!document.cookie.includes('welcome-toast=2')) {
-      toast('🛍️ Welcome to Next.js Commerce!', {
+      toast('🏎️ Welcome to Pilots Cup Racing!', {
         id: 'welcome-toast',
-        duration: Infinity,
+        duration: 10000, // Show for 10 seconds instead of infinity
         onDismiss: () => {
           document.cookie = 'welcome-toast=2; max-age=31536000; path=/';
         },
         description: (
           <>
-            This is a high-performance, SSR storefront powered by Shopify, Next.js, and Vercel.{' '}
+            Experience the thrill of professional karting at UAE's premier racing facility.{' '}
             <a
-              href="https://vercel.com/templates/next.js/nextjs-commerce"
-              className="text-blue-600 hover:underline"
-              target="_blank"
+              href="/book"
+              className="text-red-600 hover:underline"
             >
-              Deploy your own
+              Book your session
             </a>
-            .
           </>
         )
       });

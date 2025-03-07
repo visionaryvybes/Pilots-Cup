@@ -1,37 +1,30 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
 
-import { getCollections } from 'lib/shopify';
-import FilterList from './filter';
-
-async function CollectionList() {
-  const collections = await getCollections();
-  return <FilterList list={collections} title="Collections" />;
-}
-
-const skeleton = 'mb-3 h-4 w-5/6 animate-pulse rounded-sm';
-const activeAndTitles = 'bg-neutral-800 dark:bg-neutral-300';
-const items = 'bg-neutral-400 dark:bg-neutral-700';
-
 export default function Collections() {
+  // Placeholder data instead of Shopify collections
+  const collections = [
+    { handle: 'clothing', title: 'Clothing' },
+    { handle: 'accessories', title: 'Accessories' },
+    { handle: 'shoes', title: 'Shoes' },
+    { handle: 'new-arrivals', title: 'New Arrivals' },
+    { handle: 'sale', title: 'Sale' }
+  ];
+
   return (
-    <Suspense
-      fallback={
-        <div className="col-span-2 hidden h-[400px] w-full flex-none py-4 lg:block">
-          <div className={clsx(skeleton, activeAndTitles)} />
-          <div className={clsx(skeleton, activeAndTitles)} />
-          <div className={clsx(skeleton, items)} />
-          <div className={clsx(skeleton, items)} />
-          <div className={clsx(skeleton, items)} />
-          <div className={clsx(skeleton, items)} />
-          <div className={clsx(skeleton, items)} />
-          <div className={clsx(skeleton, items)} />
-          <div className={clsx(skeleton, items)} />
-          <div className={clsx(skeleton, items)} />
-        </div>
-      }
-    >
-      <CollectionList />
+    <Suspense>
+      <div className="order-last flex w-full gap-2 overflow-x-auto pt-1 md:order-none">
+        {collections.map((collection) => (
+          <div
+            key={collection.handle}
+            className={clsx(
+              'block rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-gray-800'
+            )}
+          >
+            {collection.title}
+          </div>
+        ))}
+      </div>
     </Suspense>
   );
 }

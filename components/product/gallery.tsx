@@ -27,6 +27,13 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
             alt={images[imageIndex]?.altText as string}
             src={images[imageIndex]?.src as string}
             priority={true}
+            loading="eager"
+            unoptimized
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/images/placeholder.jpg';
+              target.onerror = null;
+            }}
           />
         )}
 
@@ -80,6 +87,13 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
                     width={80}
                     height={80}
                     active={isActive}
+                    loading="lazy"
+                    unoptimized
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = '/images/placeholder.jpg';
+                      target.onerror = null;
+                    }}
                   />
                 </button>
               </li>
