@@ -74,53 +74,81 @@ Your app should now be running on [localhost:3000](http://localhost:3000/).
 
 You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
 
-# Pilots Cup Commerce
+# Pilots Cup - Karting Website
 
-A Next.js website for Pilots Cup karting facility.
+A modern, responsive website for a karting facility built with Next.js.
 
-## Overview
+## Deployment to Render.com
 
-This project is a Next.js application for a karting facility called Pilots Cup. It features:
+This project is configured for easy deployment to Render.com using the included `render.yaml` file and `build.sh` script.
 
-- Interactive kart booking system
-- Real-time kart availability tracking
-- Membership management
-- Racing event information
-- Gallery and testimonials
+### Automatic Deployment
 
-## Technology Stack
+1. Fork or clone this repository to your GitHub account
+2. Log in to your Render.com account
+3. Click "New" and select "Blueprint"
+4. Connect your GitHub account and select this repository
+5. Click "Apply Blueprint"
 
-- **Framework**: Next.js 14
-- **Styling**: Tailwind CSS
-- **Real-time Updates**: Custom WebSocket implementation
-- **Server**: Custom Node.js server with Socket.IO
+Render will automatically configure and deploy the application based on the settings in `render.yaml`.
 
-## Development
+### Manual Deployment
 
-To run the development server:
+If you prefer to set up the deployment manually:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. Log in to your Render.com account
+2. Click "New" and select "Web Service"
+3. Connect your GitHub account and select this repository
+4. Configure the following settings:
+   - Name: `pilots-cup` (or your preferred name)
+   - Environment: `Node`
+   - Region: Choose the region closest to your users
+   - Branch: `main`
+   - Build Command: `chmod +x build.sh && ./build.sh`
+   - Start Command: `NODE_ENV=production node server.js`
+   - Plan: Free or your preferred plan
+5. Add the following environment variables:
+   - `NODE_ENV`: `production`
+   - `PORT`: `3000`
+   - `NEXT_TELEMETRY_DISABLED`: `1`
+   - `NODE_OPTIONS`: `--max-old-space-size=4096`
+6. Click "Create Web Service"
 
-Open [http://localhost:3003](http://localhost:3003) in your browser to see the result.
+## Local Development
 
-## Project Structure
+To run the project locally:
 
-- `app/`: Next.js App Router pages and layouts
-- `components/`: Reusable React components
-- `public/`: Static assets
-- `lib/`: Utility functions and shared code
-- `hooks/`: Custom React hooks
-- `server.js`: Custom server implementation with WebSockets
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Open [http://localhost:3002](http://localhost:3002) in your browser
 
-## Deployment Notes
+## Build Script
 
-This project uses a custom server implementation which may require special configuration for deployment platforms. It's not directly compatible with static site hosting or some serverless environments without modifications.
+The included `build.sh` script handles:
+
+1. Creating any missing files and directories required for the build
+2. Setting up proper environment variables for optimal build performance
+3. Cleaning npm cache to prevent build issues
+4. Installing dependencies
+5. Building the application
+
+This ensures a smooth deployment process even if some files are missing or misconfigured.
+
+## Troubleshooting
+
+If you encounter any issues during deployment:
+
+1. Check the Render.com logs for specific error messages
+2. Ensure all environment variables are correctly set
+3. Verify that the build script has execute permissions (`chmod +x build.sh`)
+4. Check that your repository is up to date with the latest changes
+
+For local development issues, try:
+
+1. Clearing the Next.js cache: `rm -rf .next`
+2. Reinstalling dependencies: `rm -rf node_modules && npm install`
+3. Restarting the development server
 
 ## License
 
