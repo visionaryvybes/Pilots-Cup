@@ -73,3 +73,55 @@ Your app should now be running on [localhost:3000](http://localhost:3000/).
 ## Vercel, Next.js Commerce, and Shopify Integration Guide
 
 You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+
+# Pilots Cup Commerce
+
+A Next.js website for Pilots Cup karting facility.
+
+## Overview
+
+This project is a Next.js application for a karting facility called Pilots Cup. It features:
+
+- Interactive kart booking system
+- Real-time kart availability tracking
+- Membership management
+- Racing event information
+- Gallery and testimonials
+
+## Technology Stack
+
+- **Framework**: Next.js 14
+- **Styling**: Tailwind CSS
+- **Real-time Updates**: Custom WebSocket implementation
+- **Server**: Custom Node.js server with Socket.IO
+
+## Development
+
+To run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
+
+Open [http://localhost:3003](http://localhost:3003) in your browser to see the result.
+
+## Project Structure
+
+- `app/`: Next.js App Router pages and layouts
+- `components/`: Reusable React components
+- `public/`: Static assets
+- `lib/`: Utility functions and shared code
+- `hooks/`: Custom React hooks
+- `server.js`: Custom server implementation with WebSockets
+
+## Deployment Notes
+
+This project uses a custom server implementation which may require special configuration for deployment platforms. It's not directly compatible with static site hosting or some serverless environments without modifications.
+
+## License
+
+This project is licensed under the MIT License.
