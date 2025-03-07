@@ -3,10 +3,33 @@ services:
     name: pilots-cup
     env: node
     plan: free
-    buildCommand: pnpm install && pnpm run build
-    startCommand: pnpm start
+    buildCommand: ./build.sh
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3000 
+        value: 3000
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=()
+      # Responsive design headers
+      - path: /*
+        name: Viewport
+        value: width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover 

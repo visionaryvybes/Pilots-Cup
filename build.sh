@@ -3,10 +3,27 @@
 # Exit on error
 set -e
 
-echo "=== Installing dependencies ==="
-pnpm install
+# Print commands before executing
+set -x
 
-echo "=== Building Next.js application ==="
-pnpm run build
+# Install dependencies
+echo "Installing dependencies..."
+npm install
 
-echo "=== Build completed successfully ===" 
+# Create necessary directories if they don't exist
+mkdir -p .next/static
+mkdir -p public
+
+# Ensure responsive CSS is properly copied
+echo "Ensuring responsive CSS is available..."
+cp -f public/mobile-responsive.css .next/static/
+
+# Build the application
+echo "Building the application..."
+npm run build
+
+# Optimize for production
+echo "Optimizing for production..."
+npm prune --production
+
+echo "Build completed successfully!" 
