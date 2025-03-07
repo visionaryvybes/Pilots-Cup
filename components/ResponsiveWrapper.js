@@ -45,6 +45,9 @@ const ResponsiveWrapper = ({
   const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined') return;
+    
     // Mark that we're in the client
     setIsClient(true);
     
@@ -60,8 +63,10 @@ const ResponsiveWrapper = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // Don't render anything on the server or during hydration
-  if (!isClient) return defaultContent;
+  // During SSR or hydration, return default content or mobile content
+  if (!isClient) {
+    return defaultContent || mobile || null;
+  }
   
   // Determine which breakpoint we're at
   const isMobile = screenWidth >= breakpoints.mobile && screenWidth < breakpoints.tablet;

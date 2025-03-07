@@ -1,9 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const ResponsiveOptimizer = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
+    // Set mounted state to true
+    setIsMounted(true);
+    
     // Function to handle viewport adjustments for all device types
     const handleViewport = () => {
+      // Skip if not in browser environment
+      if (typeof window === 'undefined') return;
+      
       // Fix for iOS Safari viewport height issues
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -34,56 +42,74 @@ const ResponsiveOptimizer = () => {
         
         // Fix for fixed elements on mobile
         const fixedElements = document.querySelectorAll('.fixed-top, .fixed-bottom, .sticky-top');
-        fixedElements.forEach(el => {
-          el.style.position = 'relative';
-        });
+        if (fixedElements && fixedElements.length > 0) {
+          fixedElements.forEach(el => {
+            if (el) el.style.position = 'relative';
+          });
+        }
         
         // Fix for horizontal overflow
         const containers = document.querySelectorAll('.container, .container-fluid');
-        containers.forEach(container => {
-          container.style.maxWidth = '100vw';
-          container.style.overflowX = 'hidden';
-        });
+        if (containers && containers.length > 0) {
+          containers.forEach(container => {
+            if (container) {
+              container.style.maxWidth = '100vw';
+              container.style.overflowX = 'hidden';
+            }
+          });
+        }
         
         // Adjust font sizes for better readability on mobile
         const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        headings.forEach(heading => {
-          const currentSize = window.getComputedStyle(heading).fontSize;
-          const currentSizeNum = parseFloat(currentSize);
-          if (heading.tagName === 'H1' && currentSizeNum > 32) {
-            heading.style.fontSize = '32px';
-          } else if (heading.tagName === 'H2' && currentSizeNum > 28) {
-            heading.style.fontSize = '28px';
-          } else if (heading.tagName === 'H3' && currentSizeNum > 24) {
-            heading.style.fontSize = '24px';
-          }
-        });
+        if (headings && headings.length > 0) {
+          headings.forEach(heading => {
+            if (!heading) return;
+            
+            const currentSize = window.getComputedStyle(heading).fontSize;
+            const currentSizeNum = parseFloat(currentSize);
+            if (heading.tagName === 'H1' && currentSizeNum > 32) {
+              heading.style.fontSize = '32px';
+            } else if (heading.tagName === 'H2' && currentSizeNum > 28) {
+              heading.style.fontSize = '28px';
+            } else if (heading.tagName === 'H3' && currentSizeNum > 24) {
+              heading.style.fontSize = '24px';
+            }
+          });
+        }
         
         // Ensure buttons are large enough for touch targets
         const touchTargets = document.querySelectorAll('a, button, .btn, input[type="button"], input[type="submit"]');
-        touchTargets.forEach(target => {
-          const height = parseFloat(window.getComputedStyle(target).height);
-          if (height < 44) {
-            target.style.minHeight = '44px';
-          }
-          
-          const width = parseFloat(window.getComputedStyle(target).width);
-          if (width < 44) {
-            target.style.minWidth = '44px';
-          }
-        });
+        if (touchTargets && touchTargets.length > 0) {
+          touchTargets.forEach(target => {
+            if (!target) return;
+            
+            const height = parseFloat(window.getComputedStyle(target).height);
+            if (height < 44) {
+              target.style.minHeight = '44px';
+            }
+            
+            const width = parseFloat(window.getComputedStyle(target).width);
+            if (width < 44) {
+              target.style.minWidth = '44px';
+            }
+          });
+        }
       } else {
         // Reset styles for larger screens
         const fixedElements = document.querySelectorAll('.fixed-top, .fixed-bottom, .sticky-top');
-        fixedElements.forEach(el => {
-          el.style.position = '';
-        });
+        if (fixedElements && fixedElements.length > 0) {
+          fixedElements.forEach(el => {
+            if (el) el.style.position = '';
+          });
+        }
         
         // Reset font sizes for larger screens if they were manually set
         const headings = document.querySelectorAll('h1[style*="font-size"], h2[style*="font-size"], h3[style*="font-size"], h4[style*="font-size"], h5[style*="font-size"], h6[style*="font-size"]');
-        headings.forEach(heading => {
-          heading.style.fontSize = '';
-        });
+        if (headings && headings.length > 0) {
+          headings.forEach(heading => {
+            if (heading) heading.style.fontSize = '';
+          });
+        }
       }
       
       // Handle navigation menu for different devices
@@ -115,19 +141,22 @@ const ResponsiveOptimizer = () => {
       }
     };
     
-    // Run on mount
-    handleViewport();
-    
-    // Add event listeners
-    window.addEventListener('resize', handleViewport);
-    window.addEventListener('orientationchange', handleViewport);
-    
-    // Clean up
-    return () => {
-      window.removeEventListener('resize', handleViewport);
-      window.removeEventListener('orientationchange', handleViewport);
-    };
-  }, []);
+    // Only run in browser environment
+    if (typeof window !== 'undefined') {
+      // Run on mount
+      handleViewport();
+      
+      // Add event listeners
+      window.addEventListener('resize', handleViewport);
+      window.addEventListener('orientationchange', handleViewport);
+      
+      // Clean up
+      return () => {
+        window.removeEventListener('resize', handleViewport);
+        window.removeEventListener('orientationchange', handleViewport);
+      };
+    }
+  }, [isMounted]);
   
   return null; // This component doesn't render anything
 };

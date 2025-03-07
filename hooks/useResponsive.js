@@ -24,6 +24,9 @@ const useResponsive = () => {
   const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
+    // Skip if not in browser environment
+    if (typeof window === 'undefined') return;
+    
     // Mark that we're in the client
     setIsClient(true);
     
@@ -39,19 +42,18 @@ const useResponsive = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // Calculate responsive flags
-  const isMobile = isClient && screenWidth >= breakpoints.mobile && screenWidth < breakpoints.tablet;
+  // Calculate responsive flags - default to mobile during SSR
+  const isMobile = !isClient || (screenWidth >= breakpoints.mobile && screenWidth < breakpoints.tablet);
   const isTablet = isClient && screenWidth >= breakpoints.tablet && screenWidth < breakpoints.desktop;
   const isDesktop = isClient && screenWidth >= breakpoints.desktop && screenWidth < breakpoints.largeDesktop;
   const isLargeDesktop = isClient && screenWidth >= breakpoints.largeDesktop;
   
-  // Determine current device type
-  let deviceType = 'unknown';
+  // Determine current device type - default to mobile during SSR
+  let deviceType = 'mobile'; // Default to mobile for SSR
   if (isClient) {
-    if (isMobile) deviceType = 'mobile';
-    else if (isTablet) deviceType = 'tablet';
-    else if (isDesktop) deviceType = 'desktop';
-    else if (isLargeDesktop) deviceType = 'largeDesktop';
+    if (screenWidth >= breakpoints.largeDesktop) deviceType = 'largeDesktop';
+    else if (screenWidth >= breakpoints.desktop) deviceType = 'desktop';
+    else if (screenWidth >= breakpoints.tablet) deviceType = 'tablet';
   }
   
   return {
@@ -59,7 +61,7 @@ const useResponsive = () => {
     isTablet,
     isDesktop,
     isLargeDesktop,
-    screenWidth: isClient ? screenWidth : null,
+    screenWidth: isClient ? screenWidth : 0,
     deviceType,
     isClient
   };
