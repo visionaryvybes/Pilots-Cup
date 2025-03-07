@@ -24,6 +24,8 @@ class MyDocument extends Document {
           <meta name="format-detection" content="telephone=no" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+          {/* Simple responsive script */}
+          <script src="/responsive.js" defer />
         </Head>
         <body>
           <Main />

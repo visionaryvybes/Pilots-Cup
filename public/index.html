@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <meta charset="UTF-8">
   <title>Pilots Cup - Premium Karting Experience</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -115,7 +115,20 @@
       padding: 2rem 0;
       text-align: center;
     }
+    
+    /* Device-specific styles */
+    .device-mobile .container {
+      padding: 1rem;
+    }
+    .device-mobile .hero {
+      padding: 2rem 1rem;
+    }
+    .device-mobile .features {
+      grid-template-columns: 1fr;
+    }
   </style>
+  <!-- Load responsive script -->
+  <script src="/responsive.js" defer></script>
 </head>
 <body>
   <div id="root"></div>

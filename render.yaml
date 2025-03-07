@@ -3,13 +3,17 @@ services:
     name: pilots-cup
     env: node
     plan: free
-    buildCommand: ./build.sh
+    buildCommand: chmod +x build.sh && ./build.sh
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
+      - key: NEXT_TELEMETRY_DISABLED
+        value: 1
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=4096
     headers:
       - path: /*
         name: Cache-Control
