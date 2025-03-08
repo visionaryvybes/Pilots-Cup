@@ -119,7 +119,7 @@ export function Navbar() {
       }}
       transition={{ duration: 0.3 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'py-2 shadow-lg' : 'py-4'
+        isScrolled ? 'py-2 shadow-lg' : 'py-3 md:py-4'
       }`}
     >
       <div className="container mx-auto px-4">
@@ -127,7 +127,7 @@ export function Navbar() {
           {/* Logo */}
           <Link 
             href="/" 
-            className="text-white font-bold text-2xl"
+            className="text-white font-bold text-xl md:text-2xl"
             aria-label="Pilots Cup - Home"
           >
             <motion.span
@@ -182,7 +182,7 @@ export function Navbar() {
             animate={{ rotate: isMenuOpen ? 90 : 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-gray-200 hover:text-white focus:outline-none"
+            className="md:hidden text-gray-200 hover:text-white focus:outline-none p-2"
             aria-expanded={isMenuOpen}
             aria-label="Toggle navigation menu"
           >
@@ -207,7 +207,7 @@ export function Navbar() {
               animate="open"
               exit="closed"
               variants={menuVariants}
-              className="md:hidden mt-2 overflow-hidden bg-black/95 rounded-lg"
+              className="md:hidden mt-2 overflow-hidden bg-black/95 rounded-lg shadow-lg"
             >
               <motion.div className="flex flex-col space-y-1 px-2 pt-2 pb-3">
                 {navItems.map((item, i) => (
@@ -218,8 +218,11 @@ export function Navbar() {
                   >
                     <Link
                       href={item.href}
-                      onClick={(e) => item.isScroll && handleScrollTo(e, item.href)}
-                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                      onClick={(e) => {
+                        item.isScroll && handleScrollTo(e, item.href);
+                        setIsMenuOpen(false);
+                      }}
+                      className="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
                       aria-current={pathname === item.href ? 'page' : undefined}
                     >
                       {item.label}
@@ -232,7 +235,7 @@ export function Navbar() {
                 >
                   <ButtonLink
                     href="/book"
-                    className="mt-2 w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-base font-medium text-center transition-colors"
+                    className="mt-2 w-full bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-md text-base font-medium text-center transition-colors"
                   >
                     Book Now
                   </ButtonLink>

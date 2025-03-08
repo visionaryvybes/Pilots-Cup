@@ -1,0 +1,36 @@
+'use client';
+
+import {
+    CalendarIcon,
+    ClockIcon,
+    TrophyIcon
+} from '@heroicons/react/24/outline';
+import { IMAGES } from '../../lib/constants/images';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+
+// Mock data for the member
+const memberData = {
+  name: 'Ahmed Al-Mansouri',
+  email: 'ahmed@example.com',
+  membershipType: 'Gold',
+  memberSince: 'January 2023',
+  hoursRemaining: 32,  // Out of 50 hours for Gold membership
+  profileImage: IMAGES.team.member1,
+  upcomingBookings: [
+    { id: 1, date: '2023-12-15T14:00:00', duration: 2, kart: 'Rotax Senior', track: 'Main Circuit' },
+    { id: 2, date: '2023-12-20T16:30:00', duration: 2, kart: 'Rotax Senior', track: 'Main Circuit' }
+  ],
+  raceHistory: [
+    { id: 101, date: '2023-11-30T15:00:00', position: 2, lapTime: '00:45.321', kart: 'Rotax Senior', track: 'Main Circuit' },
+    { id: 102, date: '2023-11-25T13:30:00', position: 1, lapTime: '00:44.876', kart: 'Rotax Senior', track: 'Main Circuit' },
+    { id: 103, date: '2023-11-20T17:00:00', position: 3, lapTime: '00:45.112', kart: 'Rotax Senior', track: 'Main Circuit' },
+    { id: 104, date: '2023-11-15T14:30:00', position: 2, lapTime: '00:45.543', kart: 'Rotax Senior', track: 'Main Circuit' }
+  ],
+  achievements: [
+    { id: 201, title: 'First Win', date: '2023-06-15', description: 'First place in Rotax Senior category' },
+    { id: 202, title: 'Fastest Lap', date: '2023-08-22', description: 'Set track record in Rotax Senior' },
+    { id: 203, title: '10 Races Completed', date: '2023-10-05', description: 'Participated in 10 races' }
+  ]
+}; 

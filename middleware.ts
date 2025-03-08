@@ -1,10 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-// Simple in-memory rate limiting
-const rateLimit = new Map<string, { count: number; timestamp: number }>();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const MAX_REQUESTS = 100; // requests per window
-
 export default async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
@@ -22,7 +17,7 @@ export default async function middleware(request: NextRequest) {
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self'",
-      "connect-src 'self' ws: wss:",
+      "connect-src 'self'",
       "media-src 'self'",
       "object-src 'none'",
       "frame-ancestors 'self'",
@@ -33,43 +28,14 @@ export default async function middleware(request: NextRequest) {
     response.headers.set(key, value);
   });
 
-  // Rate limiting for API routes
+  // For API routes, add a basic rate limit header
+  // Note: For production, use a proper rate limiting solution with Redis or similar
   if (request.nextUrl.pathname.startsWith('/api')) {
-    const ip = request.ip ?? 'anonymous';
-    const now = Date.now();
-    const windowStart = now - RATE_LIMIT_WINDOW;
-
-    // Clean up old entries
-    for (const [key, data] of rateLimit.entries()) {
-      if (data.timestamp < windowStart) {
-        rateLimit.delete(key);
-      }
-    }
-
-    // Check rate limit
-    const currentLimit = rateLimit.get(ip);
-    if (currentLimit) {
-      if (currentLimit.timestamp < windowStart) {
-        // Reset if window has passed
-        rateLimit.set(ip, { count: 1, timestamp: now });
-      } else if (currentLimit.count >= MAX_REQUESTS) {
-        // Rate limit exceeded
-        return new NextResponse(null, {
-          status: 429,
-          statusText: 'Too Many Requests',
-          headers: {
-            'Retry-After': '60',
-            'Content-Type': 'application/json',
-          },
-        });
-      } else {
-        // Increment counter
-        currentLimit.count++;
-      }
-    } else {
-      // First request in window
-      rateLimit.set(ip, { count: 1, timestamp: now });
-    }
+    // Add headers to indicate rate limiting should be implemented
+    response.headers.set('X-RateLimit-Limit', '100');
+    
+    // In production, implement proper rate limiting with Redis or a similar service
+    // This is a placeholder for the actual implementation
   }
 
   return response;

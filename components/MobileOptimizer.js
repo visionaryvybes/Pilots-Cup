@@ -55,6 +55,8 @@ const ResponsiveOptimizer = () => {
             if (container) {
               container.style.maxWidth = '100vw';
               container.style.overflowX = 'hidden';
+              container.style.paddingLeft = '15px';
+              container.style.paddingRight = '15px';
             }
           });
         }
@@ -69,10 +71,58 @@ const ResponsiveOptimizer = () => {
             const currentSizeNum = parseFloat(currentSize);
             if (heading.tagName === 'H1' && currentSizeNum > 32) {
               heading.style.fontSize = '32px';
+              heading.style.lineHeight = '1.2';
             } else if (heading.tagName === 'H2' && currentSizeNum > 28) {
               heading.style.fontSize = '28px';
+              heading.style.lineHeight = '1.2';
             } else if (heading.tagName === 'H3' && currentSizeNum > 24) {
               heading.style.fontSize = '24px';
+              heading.style.lineHeight = '1.2';
+            }
+          });
+        }
+        
+        // Fix text overlays by adjusting line heights and spacing
+        const textElements = document.querySelectorAll('p, span, div');
+        if (textElements && textElements.length > 0) {
+          textElements.forEach(el => {
+            if (!el) return;
+            
+            // Skip elements that are likely UI components
+            if (el.classList.contains('icon') || 
+                el.classList.contains('svg') || 
+                el.tagName === 'SVG' ||
+                el.classList.contains('button') ||
+                el.classList.contains('btn')) {
+              return;
+            }
+            
+            // Adjust line height for better readability
+            const currentLineHeight = window.getComputedStyle(el).lineHeight;
+            if (currentLineHeight === 'normal' || parseFloat(currentLineHeight) < 1.5) {
+              el.style.lineHeight = '1.5';
+            }
+            
+            // Ensure proper text wrapping
+            el.style.overflowWrap = 'break-word';
+            el.style.wordWrap = 'break-word';
+            el.style.hyphens = 'auto';
+          });
+        }
+        
+        // Fix grid layouts that might cause overlapping on mobile
+        const gridContainers = document.querySelectorAll('.grid');
+        if (gridContainers && gridContainers.length > 0) {
+          gridContainers.forEach(container => {
+            if (!container) return;
+            
+            // Force single column layout on mobile for grid containers
+            if (container.classList.contains('grid-cols-2') || 
+                container.classList.contains('grid-cols-3') || 
+                container.classList.contains('grid-cols-4')) {
+              container.style.display = 'flex';
+              container.style.flexDirection = 'column';
+              container.style.gap = '1rem';
             }
           });
         }

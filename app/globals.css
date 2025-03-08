@@ -8,6 +8,7 @@
   --foreground: 0 0% 100%;
   --primary: 0 79% 63%;
   --primary-foreground: 0 0% 100%;
+  --vh: 1vh;
 
   --color-neutral-50: #f9fafb;
   --color-neutral-100: #f3f4f6;
@@ -45,6 +46,57 @@
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+}
+
+/* Responsive text styles */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  h2 {
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+  }
+
+  h3 {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+
+  p, span, div {
+    line-height: 1.5 !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .fixed, .sticky {
+    position: relative !important;
+  }
+
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 
@@ -111,10 +163,18 @@ button {
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  -webkit-text-size-adjust: 100%;
 }
 
-a, button {
-  transition: all 0.3s ease;
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Fix for iOS 100vh issue */
+.min-h-screen {
+  min-height: 100vh; /* Fallback */
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 /* Component styles */
@@ -129,64 +189,13 @@ a, button {
   transition-duration: 150ms;
 }
 
-/* Animations */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Prevent text overlapping */
+.text-balance {
+  text-wrap: balance;
 }
 
-@keyframes slide-up {
-  from { 
-    transform: translateY(20px); 
-    opacity: 0; 
-  }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
-  }
-}
-
-@keyframes scroll {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(100%); }
-  100% { transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fade-in 1s ease-out;
-}
-
-.animate-slide-up {
-  animation: slide-up 1s ease-out;
-}
-
-.animate-scroll {
-  animation: scroll 2s infinite;
-}
-
-/* Hero section gradients */
-.hero-gradient {
-  background: linear-gradient(
-    135deg,
-    rgba(239, 68, 68, 0.2),
-    rgba(37, 99, 235, 0.2)
-  );
-}
-
-/* Glassmorphism effects */
-.glass-card {
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Interactive hover effects */
-.hover-scale {
-  transition: transform 0.3s ease;
-}
-
-.hover-scale:hover {
-  transform: scale(1.05);
+.text-pretty {
+  text-wrap: pretty;
 }
 
 /* Custom scrollbar */
@@ -205,4 +214,122 @@ a, button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #dc2626;
+}
+
+/* Prevent horizontal overflow */
+.overflow-x-clip {
+  overflow-x: clip;
+}
+
+/* Responsive container padding */
+.container {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+/* Small mobile devices (Galaxy Fold, etc) */
+@media (min-width: 280px) and (max-width: 320px) {
+  html {
+    font-size: 12px;
+  }
+  
+  .container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  h3 {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* Tablet-specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .tablet-only {
+    display: block;
+  }
+}
+
+/* Landscape mode optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .min-h-screen {
+    min-height: 120vh;
+  }
+  
+  .hero-content {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem !important;
+  }
+  
+  .mobile-menu {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+}
+
+/* Ultra-wide screen optimizations */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  html {
+    font-size: 18px;
+  }
+  
+  .ultra-wide-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+/* Device pixel ratio optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
 }

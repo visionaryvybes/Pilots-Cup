@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useWebSocket } from '../../lib/hooks/use-websocket';
+import { useState } from 'react';
+import { mockRankings } from '../../lib/data/static-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 interface RankingData {
@@ -11,11 +11,6 @@ interface RankingData {
   category: string;
   date: string;
   hours: number;
-}
-
-interface RankingMessage {
-  type: 'ranking_update';
-  data: RankingData[];
 }
 
 interface Prize {
@@ -60,72 +55,16 @@ const twentyFiveHourPrizes: Prize[] = [
   },
 ];
 
+// Format date consistently to avoid hydration errors
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US');
+};
+
 export function Rankings() {
-  const [rankings, setRankings] = useState<RankingData[]>([]);
-  const { lastMessage } = useWebSocket();
   const [activeTab, setActiveTab] = useState('50-hour');
 
-  useEffect(() => {
-    if (!lastMessage) return;
-
-    try {
-      const message = JSON.parse(lastMessage) as RankingMessage;
-      if (message.type === 'ranking_update') {
-        setRankings(message.data);
-      }
-    } catch (err) {
-      console.error('Error parsing ranking update:', err);
-    }
-  }, [lastMessage]);
-
-  // Temporary mock data
-  useEffect(() => {
-    setRankings([
-      {
-        position: 1,
-        name: 'Ahmed Al-Mansoori',
-        lapTime: '00:45.321',
-        category: 'Senior Max',
-        date: '2024-03-15',
-        hours: 50,
-      },
-      {
-        position: 2,
-        name: 'Sarah Thompson',
-        lapTime: '00:45.654',
-        category: 'Senior Max',
-        date: '2024-03-15',
-        hours: 50,
-      },
-      {
-        position: 3,
-        name: 'Mohammed Al-Hashimi',
-        lapTime: '00:45.987',
-        category: 'Senior Max',
-        date: '2024-03-14',
-        hours: 50,
-      },
-      {
-        position: 4,
-        name: 'John Davidson',
-        lapTime: '00:46.123',
-        category: 'Senior Max',
-        date: '2024-03-14',
-        hours: 50,
-      },
-      {
-        position: 5,
-        name: 'Fatima Al-Sayed',
-        lapTime: '00:46.432',
-        category: 'Senior Max',
-        date: '2024-03-13',
-        hours: 50,
-      },
-    ]);
-  }, []);
-
   // Filter rankings based on active tab
-  const filteredRankings = rankings.filter(ranking => 
+  const filteredRankings = mockRankings.filter(ranking => 
     activeTab === '50-hour' ? ranking.hours === 50 : ranking.hours === 25
   );
 
@@ -187,7 +126,7 @@ export function Rankings() {
                               {ranking.category}
                             </td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                              {new Date(ranking.date).toLocaleDateString()}
+                              {formatDate(ranking.date)}
                             </td>
                           </tr>
                         ))}
@@ -244,7 +183,7 @@ export function Rankings() {
                               {ranking.category}
                             </td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-300">
-                              {new Date(ranking.date).toLocaleDateString()}
+                              {formatDate(ranking.date)}
                             </td>
                           </tr>
                         ))}

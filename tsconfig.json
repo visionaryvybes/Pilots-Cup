@@ -33,7 +33,8 @@
       "components/*": [
         "./components/*"
       ]
-    }
+    },
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",

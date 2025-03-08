@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { mockAvailability } from '../lib/data/static-data';
 
 interface KartAvailabilityProps {
   kartCategory?: string;
@@ -8,44 +9,21 @@ interface KartAvailabilityProps {
 
 export const KartAvailability: React.FC<KartAvailabilityProps> = ({ kartCategory }) => {
   const [date, setDate] = useState<string>(getTodayDate());
-  const [availability, setAvailability] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
   function getTodayDate() {
     const today = new Date();
     return today.toISOString().split('T')[0];
   }
 
-  useEffect(() => {
-    // This is a simplified version that doesn't rely on WebSockets
-    // Instead, we'll show mock data
-    setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      const mockAvailability = {
-        bambino: { available: 4, total: 5, maintenance: 1 },
-        micro: { available: 3, total: 4, maintenance: 1 },
-        mini: { available: 5, total: 5, maintenance: 0 },
-        junior: { available: 4, total: 6, maintenance: 2 },
-        senior: { available: 7, total: 8, maintenance: 1 },
-        dd2: { available: 3, total: 4, maintenance: 1 }
-      };
-      
-      setAvailability(mockAvailability);
-      setLoading(false);
-    }, 1000);
-  }, [date]);
-
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
   };
 
   const getAvailabilityColor = (category: string) => {
-    if (!availability || !availability[category]) return 'bg-gray-200';
+    if (!mockAvailability || !mockAvailability[category]) return 'bg-gray-200';
     
-    const { available, total } = availability[category];
+    const { available, total } = mockAvailability[category];
     const percentage = (available / total) * 100;
     
     if (percentage >= 70) return 'bg-green-500';
@@ -74,11 +52,9 @@ export const KartAvailability: React.FC<KartAvailabilityProps> = ({ kartCategory
         <div className="flex justify-center py-4">
           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-500"></div>
         </div>
-      ) : error ? (
-        <div className="text-red-500 text-center py-4">{error}</div>
-      ) : availability ? (
+      ) : mockAvailability ? (
         <div className="space-y-3">
-          {Object.keys(availability)
+          {Object.keys(mockAvailability)
             .filter(category => !kartCategory || category === kartCategory.toLowerCase())
             .map(category => (
               <div key={category} className="flex items-center justify-between">
@@ -87,7 +63,7 @@ export const KartAvailability: React.FC<KartAvailabilityProps> = ({ kartCategory
                   <span className="text-gray-300 capitalize">{category}</span>
                 </div>
                 <div className="text-white">
-                  {availability[category].available}/{availability[category].total} Available
+                  {mockAvailability[category].available}/{mockAvailability[category].total} Available
                 </div>
               </div>
             ))}

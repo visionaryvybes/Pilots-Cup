@@ -96,7 +96,7 @@ export function TrackStatus() {
     if (!isClient) return ''; // Return empty string during server rendering
     
     try {
-      return new Date(timestamp).toLocaleTimeString([], { 
+      return new Date(timestamp).toLocaleTimeString('en-US', { 
         hour: '2-digit', 
         minute: '2-digit' 
       });
